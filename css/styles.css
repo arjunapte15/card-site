@@ -1,1 +1,465 @@
 /* [BRAND NAME] demo site styles: mobile-first, plain CSS. */
+
+/* Font loaded here so index.html stays content-only. One Google Font: Nunito. */
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap");
+
+/* ---------- Design tokens ---------- */
+:root {
+  /* Fonts */
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Colors (all text pairs checked for WCAG AA, 4.5:1 or better) */
+  --color-bg: #fffdf7;          /* warm clean background */
+  --color-surface: #ffffff;     /* cards */
+  --color-tint: #eef4ff;        /* alternating section background */
+  --color-text: #1d2340;        /* 15.1:1 on bg */
+  --color-muted: #4a5170;       /* 7.6:1 on bg, 7.0:1 on tint */
+  --color-border: #e3e6f0;
+  --color-primary: #5b3fd9;     /* violet: white text 6.7:1 */
+  --color-primary-dark: #4529b8;
+  --color-sun: #ffc93c;         /* yellow: dark text 10:1 */
+  --color-coral: #ff6b6b;       /* decorative only */
+  --color-coral-dark: #d43a3f;  /* 4.7:1 on white */
+  --color-mint: #2ec4a6;        /* decorative only */
+  --color-mint-soft: #d9f7ef;
+  --color-footer-bg: #1d2340;
+  --color-footer-text: #e6e8f2; /* 12.6:1 on footer bg */
+  --color-focus: #ffb000;
+
+  /* Shape and spacing */
+  --radius-sm: 0.75rem;
+  --radius-md: 1.25rem;
+  --radius-lg: 2rem;
+  --radius-pill: 999px;
+  --shadow-card: 0 6px 20px rgba(29, 35, 64, 0.08);
+  --space-section: 3.5rem;
+  --page-max: 68rem;
+  --gutter: 1.25rem;
+  --header-height: 7rem;        /* used for anchor scroll offset */
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height);
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  background: var(--color-bg);
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+  font-weight: 900;
+  margin: 0 0 0.75rem;
+}
+
+h1 {
+  font-size: clamp(2.25rem, 8vw, 4rem);
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+a {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- Skip link ---------- */
+.skip-link {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* ---------- Header and nav (mobile first) ---------- */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem var(--gutter) 0.6rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 2px 12px rgba(29, 35, 64, 0.06);
+}
+
+@supports (backdrop-filter: blur(8px)) {
+  header {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+  }
+}
+
+.logo {
+  align-self: flex-start;
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--color-text);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+.logo::before {
+  content: "";
+  display: inline-block;
+  width: 0.8em;
+  height: 1.05em;
+  margin-right: 0.45em;
+  vertical-align: -0.15em;
+  border-radius: 0.2em;
+  background: linear-gradient(135deg, var(--color-coral), var(--color-sun));
+  transform: rotate(-8deg);
+}
+
+/* On small screens the nav collapses to one swipeable row of pills,
+   so the header stays short and the page never scrolls sideways. */
+nav {
+  margin-inline: calc(var(--gutter) * -1);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+nav::-webkit-scrollbar {
+  display: none;
+}
+
+nav ul {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.1rem var(--gutter) 0.2rem;
+  list-style: none;
+  width: max-content;
+}
+
+nav a {
+  display: block;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-text);
+  text-decoration: none;
+  white-space: nowrap;
+  background: var(--color-tint);
+  border-radius: var(--radius-pill);
+}
+
+nav a:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* ---------- Sections ---------- */
+section {
+  padding: var(--space-section) max(var(--gutter), (100% - var(--page-max)) / 2);
+}
+
+section > p {
+  color: var(--color-muted);
+  max-width: 40rem;
+}
+
+/* Shared card look for list items */
+#how-it-works li,
+#results li,
+#built-with-care li {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 1.5rem;
+}
+
+#how-it-works ol,
+#results ul,
+#built-with-care ul {
+  display: grid;
+  gap: 1.25rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+li p {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+/* Hero */
+#hero {
+  padding-top: 3.5rem;
+  padding-bottom: 4rem;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(255, 201, 60, 0.35), transparent 40%),
+    radial-gradient(circle at 5% 90%, rgba(46, 196, 166, 0.22), transparent 45%),
+    radial-gradient(circle at 70% 95%, rgba(255, 107, 107, 0.18), transparent 40%),
+    var(--color-bg);
+}
+
+#hero h1 {
+  max-width: 14ch;
+}
+
+#hero p {
+  font-size: 1.2rem;
+  color: var(--color-muted);
+  max-width: 34rem;
+  margin-bottom: 1.75rem;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.85rem 1.75rem;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+  background: var(--color-primary);
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  box-shadow: 0 6px 0 var(--color-primary-dark);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.button:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(2px);
+  box-shadow: 0 4px 0 var(--color-primary-dark);
+}
+
+/* How it works: numbered steps */
+#how-it-works ol {
+  counter-reset: step;
+}
+
+#how-it-works li {
+  counter-increment: step;
+  position: relative;
+}
+
+#how-it-works li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--color-text);
+  background: var(--color-sun);
+  border-radius: 50%;
+}
+
+#how-it-works li:nth-child(2)::before {
+  background: var(--color-mint-soft);
+}
+
+#how-it-works li:nth-child(3)::before {
+  background: #ffe1e1;
+}
+
+/* Results: stats */
+#results {
+  background: var(--color-tint);
+}
+
+#results li {
+  color: var(--color-muted);
+  font-weight: 600;
+  border-top: 6px solid var(--color-primary);
+}
+
+#results li:nth-child(2) {
+  border-top-color: var(--color-mint);
+}
+
+#results li:nth-child(3) {
+  border-top-color: var(--color-coral);
+}
+
+#results strong {
+  display: block;
+  font-size: clamp(1.75rem, 3.2vw, 2.25rem);
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--color-primary);
+  margin-bottom: 0.25rem;
+  overflow-wrap: anywhere;
+}
+
+/* Sample cards: gallery layout comes in Step 4 */
+#card-gallery {
+  margin-top: 1.5rem;
+}
+
+/* Built with care */
+#built-with-care {
+  background: var(--color-tint);
+}
+
+#built-with-care li {
+  position: relative;
+  padding-left: 4.25rem;
+}
+
+#built-with-care li::before {
+  content: "\2713";
+  position: absolute;
+  top: 1.4rem;
+  left: 1.25rem;
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  font-weight: 900;
+  color: var(--color-text);
+  background: var(--color-mint-soft);
+  border-radius: 50%;
+}
+
+/* Contact */
+#contact {
+  text-align: center;
+}
+
+#contact > p {
+  margin-inline: auto;
+}
+
+#contact a {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.15rem;
+  color: var(--color-primary);
+  background: var(--color-surface);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+#contact a:hover {
+  color: #fff;
+  background: var(--color-primary);
+}
+
+/* ---------- Footer ---------- */
+footer {
+  padding: 2rem var(--gutter);
+  text-align: center;
+  color: var(--color-footer-text);
+  background: var(--color-footer-bg);
+  font-size: 0.95rem;
+}
+
+footer p {
+  margin: 0;
+}
+
+/* ---------- Tablet and up ---------- */
+@media (min-width: 768px) {
+  :root {
+    --space-section: 5rem;
+    --gutter: 2rem;
+    --header-height: 5rem;
+  }
+
+  #how-it-works ol,
+  #results ul,
+  #built-with-care ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #hero {
+    padding-top: 6rem;
+    padding-bottom: 6.5rem;
+  }
+}
+
+/* ---------- Desktop: header on one line ---------- */
+@media (min-width: 1024px) {
+  header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 0.9rem;
+    padding-inline: max(var(--gutter), (100% - var(--page-max)) / 2);
+  }
+
+  .logo {
+    align-self: center;
+  }
+
+  nav {
+    margin-inline: 0;
+    overflow: visible;
+  }
+
+  nav ul {
+    padding: 0;
+  }
+
+  nav a {
+    background: transparent;
+  }
+}
