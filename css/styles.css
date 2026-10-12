@@ -24,7 +24,8 @@
   --color-mint-soft: #d9f7ef;
   --color-footer-bg: #1d2340;
   --color-footer-text: #e6e8f2; /* 12.6:1 on footer bg */
-  --color-focus: #ffb000;
+  --color-focus: #4529b8;       /* focus outline: 8.6:1 on white (3:1 needed) */
+  --color-focus-on-dark: #ffc93c; /* focus outline over dark areas (modal backdrop) */
 
   /* Shape and spacing */
   --radius-sm: 0.75rem;
@@ -51,9 +52,18 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Reduced motion: no smooth scrolling, and near-instant transitions/animations. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
@@ -107,12 +117,16 @@ img {
 :focus-visible {
   outline: 3px solid var(--color-focus);
   outline-offset: 3px;
-  border-radius: 4px;
+}
+
+/* <main> is focusable only so the skip link can move focus to it. */
+main:focus {
+  outline: none;
 }
 
 /* ---------- Skip link ---------- */
 .skip-link {
-  position: absolute;
+  position: fixed;
   top: 0.5rem;
   left: 0.5rem;
   z-index: 100;
@@ -126,6 +140,7 @@ img {
 
 .skip-link:focus {
   transform: translateY(0);
+  outline-color: var(--color-sun);
 }
 
 /* ---------- Header and nav (mobile first) ---------- */
@@ -204,9 +219,16 @@ nav a {
   border-radius: var(--radius-pill);
 }
 
-nav a:hover {
+nav a:hover,
+nav a:focus-visible {
   background: var(--color-primary);
   color: #fff;
+}
+
+/* Inset outline: the scrolling nav row would clip an outside one on mobile. */
+nav a:focus-visible {
+  outline-offset: -3px;
+  outline-color: var(--color-sun);
 }
 
 /* ---------- Sections ---------- */
@@ -280,7 +302,8 @@ li p {
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.button:hover {
+.button:hover,
+.button:focus-visible {
   background: var(--color-primary-dark);
   transform: translateY(2px);
   box-shadow: 0 4px 0 var(--color-primary-dark);
@@ -394,7 +417,8 @@ button.card {
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-button.card:hover {
+button.card:hover,
+button.card:focus-visible {
   transform: translateY(-4px) rotate(-1deg);
   box-shadow: 0 12px 28px rgba(29, 35, 64, 0.16);
 }
@@ -405,7 +429,10 @@ button.card:hover {
     transition: none;
   }
 
-  button.card:hover {
+  .button:hover,
+  .button:focus-visible,
+  button.card:hover,
+  button.card:focus-visible {
     transform: none;
   }
 }
@@ -529,6 +556,10 @@ body.modal-open {
   border: 0;
 }
 
+.card-modal :focus-visible {
+  outline-color: var(--color-focus-on-dark);
+}
+
 .card-modal::backdrop {
   background: rgba(29, 35, 64, 0.75);
 }
@@ -570,7 +601,8 @@ body.modal-open {
   cursor: pointer;
 }
 
-.card-modal-close:hover {
+.card-modal-close:hover,
+.card-modal-close:focus-visible {
   background: var(--color-sun);
 }
 
@@ -620,7 +652,8 @@ body.modal-open {
   overflow-wrap: anywhere;
 }
 
-#contact a:hover {
+#contact a:hover,
+#contact a:focus-visible {
   color: #fff;
   background: var(--color-primary);
 }
