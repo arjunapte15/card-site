@@ -13,19 +13,33 @@
     3. Save and refresh the page.
 
   Content rules: imaginary characters with AI-generated faces only.
-  No real staff, students, or names. While this list is empty,
-  the gallery shows "Sample cards coming soon" placeholder tiles.
+  No real staff, students, or names. If there are fewer than
+  MIN_TILES cards, "Sample cards coming soon" tiles fill the rest.
 */
 const SAMPLE_CARDS = [
+  {
+    file: "images/cards/captain-compass.webp",
+    name: "Captain Compass",
+    role: "Geography Teacher",
+    rarity: "Rare",
+  },
+  {
+    file: "images/cards/chef-marigold-crumb.webp",
+    name: "Chef Marigold Crumb",
+    role: "Cafeteria Chef",
+    rarity: "Super rare",
+  },
+  // Template for another card:
   // {
-  //   file: "images/cards/captain-compass.webp",
-  //   name: "Captain Compass",
-  //   role: "Geography Teacher",
-  //   rarity: "Rare",
+  //   file: "images/cards/your-character.webp",
+  //   name: "Character Name",
+  //   role: "Made-up School Job",
+  //   rarity: "Common",
   // },
 ];
 
-const PLACEHOLDER_COUNT = 4;
+// The gallery always shows at least this many tiles.
+const MIN_TILES = 4;
 
 (function () {
   const gallery = document.getElementById("card-gallery");
@@ -104,25 +118,19 @@ const PLACEHOLDER_COUNT = 4;
     return info;
   }
 
-  function renderPlaceholders() {
-    const list = document.createElement("ul");
-    list.className = "card-grid";
-
-    for (let i = 0; i < PLACEHOLDER_COUNT; i++) {
-      const item = document.createElement("li");
-      const tile = document.createElement("div");
-      tile.className = "card card-placeholder";
-      const text = document.createElement("p");
-      text.textContent = "Sample cards coming soon";
-      tile.appendChild(text);
-      item.appendChild(tile);
-      list.appendChild(item);
-    }
-
-    gallery.replaceChildren(list);
+  function createPlaceholder() {
+    const item = document.createElement("li");
+    const tile = document.createElement("div");
+    tile.className = "card card-placeholder";
+    const text = document.createElement("p");
+    text.textContent = "Sample cards coming soon";
+    tile.appendChild(text);
+    item.appendChild(tile);
+    return item;
   }
 
-  function renderCards() {
+  // Sample cards first, then "coming soon" tiles up to MIN_TILES.
+  function renderGallery() {
     const list = document.createElement("ul");
     list.className = "card-grid";
 
@@ -142,6 +150,10 @@ const PLACEHOLDER_COUNT = 4;
       item.appendChild(button);
       list.appendChild(item);
     });
+
+    for (let i = SAMPLE_CARDS.length; i < MIN_TILES; i++) {
+      list.appendChild(createPlaceholder());
+    }
 
     gallery.replaceChildren(list);
   }
@@ -223,9 +235,5 @@ const PLACEHOLDER_COUNT = 4;
     if (lastTrigger) lastTrigger.focus();
   }
 
-  if (SAMPLE_CARDS.length === 0) {
-    renderPlaceholders();
-  } else {
-    renderCards();
-  }
+  renderGallery();
 })();
