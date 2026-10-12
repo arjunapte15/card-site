@@ -67,6 +67,7 @@ PROJECT.md          This file: project rules, plan, and progress log
 Newest entries at the bottom.
 
 - **2026-10-11, Step 1 (Setup):** Created folder structure, `index.html` skeleton, empty `css/styles.css` and `js/cards.js`, `images/cards/.gitkeep`, `README.md`, `.gitignore`, and this `PROJECT.md`. Initialized git on `main` with the first commit. Brand name is still undecided ([BRAND NAME]).
+- **2026-10-11, Step 2 (HTML structure and copy):** Built all sections in `index.html` with semantic tags: header (logo text + nav), hero with "Contact us" button, how it works (3 steps), first-run results (3 [PLACEHOLDER] stats), sample cards (empty `#card-gallery`), built with care, contact (`mailto:[PLACEHOLDER EMAIL]`), and footer. Added a skip link and section `aria-labelledby` headings for accessibility. Draft copy aimed at principals and PTA parents. No styling yet. Still needed from me: brand name, the 3 stats, and contact email.
 
 ## 8. Working agreement
 
