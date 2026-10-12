@@ -352,13 +352,23 @@ li p {
   margin-top: 1.5rem;
 }
 
+/* Flex so a short row (e.g. 2 cards) sits centered. Each tile keeps the
+   width of a 2-column (mobile) or 4-column (768px+) grid. */
 .card-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  --grid-cols: 2;
+  --grid-gap: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--grid-gap);
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.card-grid > li {
+  flex: 0 0 calc((100% - (var(--grid-cols) - 1) * var(--grid-gap)) / var(--grid-cols));
+  min-width: 0;
 }
 
 /* Every card and placeholder keeps the 2.5:3.5 trading card shape. */
@@ -643,8 +653,8 @@ footer p {
   }
 
   .card-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.5rem;
+    --grid-cols: 4;
+    --grid-gap: 1.5rem;
   }
 
   #hero {

@@ -13,8 +13,8 @@
     3. Save and refresh the page.
 
   Content rules: imaginary characters with AI-generated faces only.
-  No real staff, students, or names. If there are fewer than
-  MIN_TILES cards, "Sample cards coming soon" tiles fill the rest.
+  No real staff, students, or names. If the list is empty, the
+  gallery shows PLACEHOLDER_TILES "Sample cards coming soon" tiles.
 */
 const SAMPLE_CARDS = [
   {
@@ -38,8 +38,8 @@ const SAMPLE_CARDS = [
   // },
 ];
 
-// The gallery always shows at least this many tiles.
-const MIN_TILES = 4;
+// Number of "coming soon" tiles shown when SAMPLE_CARDS is empty.
+const PLACEHOLDER_TILES = 4;
 
 (function () {
   const gallery = document.getElementById("card-gallery");
@@ -129,7 +129,7 @@ const MIN_TILES = 4;
     return item;
   }
 
-  // Sample cards first, then "coming soon" tiles up to MIN_TILES.
+  // Sample cards only; "coming soon" tiles appear only if there are none.
   function renderGallery() {
     const list = document.createElement("ul");
     list.className = "card-grid";
@@ -151,8 +151,10 @@ const MIN_TILES = 4;
       list.appendChild(item);
     });
 
-    for (let i = SAMPLE_CARDS.length; i < MIN_TILES; i++) {
-      list.appendChild(createPlaceholder());
+    if (SAMPLE_CARDS.length === 0) {
+      for (let i = 0; i < PLACEHOLDER_TILES; i++) {
+        list.appendChild(createPlaceholder());
+      }
     }
 
     gallery.replaceChildren(list);
