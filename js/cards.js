@@ -8,9 +8,10 @@
        Keep it under 500 KB; resize larger files to 750px wide.
     2. Add an object below with:
          file:   path to the image, starting with "images/cards/"
-         name:   the name shown on the card
-         role:   their school job
+         name:   the name printed on the card (used for screen readers)
+         role:   their school job (used for screen readers)
          rarity: a short label, e.g. "Common", "Rare", "Super rare"
+                 (not displayed; kept for future use)
          alt:    a description of the card image, shown to screen readers
                  in the modal (include any text printed on the card)
     3. Save and refresh the page.
@@ -113,26 +114,6 @@ const PLACEHOLDER_TILES = 4;
     return label;
   }
 
-  function createInfo(card, headingTag) {
-    const info = document.createElement("div");
-    info.className = "card-info";
-
-    const name = document.createElement(headingTag);
-    name.className = "card-name";
-    name.textContent = card.name;
-
-    const role = document.createElement("span");
-    role.className = "card-role";
-    role.textContent = card.role;
-
-    const rarity = document.createElement("span");
-    rarity.className = "card-rarity";
-    rarity.textContent = card.rarity;
-
-    info.append(name, role, rarity);
-    return info;
-  }
-
   function createPlaceholder() {
     const item = document.createElement("li");
     const tile = document.createElement("div");
@@ -155,9 +136,11 @@ const PLACEHOLDER_TILES = 4;
       button.type = "button";
       button.className = "card";
       button.setAttribute("aria-haspopup", "dialog");
+      // The card image shows the name, role, and rarity; no visible text,
+      // so the button gets its name here and the image stays alt="".
+      button.setAttribute("aria-label", "Open card: " + card.name + ", " + card.role);
 
-      // Text below names the button; the image adds nothing for screen readers here.
-      button.append(createArt(card, ""), createInfo(card, "h3"));
+      button.append(createArt(card, ""));
       button.addEventListener("click", function () {
         openModal(card, button);
       });
@@ -181,7 +164,6 @@ const PLACEHOLDER_TILES = 4;
   function buildModal() {
     const dialog = document.createElement("dialog");
     dialog.className = "card-modal";
-    dialog.setAttribute("aria-labelledby", "card-modal-title");
 
     const close = document.createElement("button");
     close.type = "button";
@@ -233,12 +215,11 @@ const PLACEHOLDER_TILES = 4;
     if (!modal) modal = buildModal();
     lastTrigger = trigger;
 
+    // No visible heading (the card image has the text), so name the dialog here.
+    modal.setAttribute("aria-label", "Sample card: " + card.name + ", " + card.role);
     const body = modal.querySelector(".card-modal-body");
-    const info = createInfo(card, "h2");
-    info.querySelector(".card-name").id = "card-modal-title";
     body.replaceChildren(
-      createArt(card, card.alt || "Sample card of " + card.name + ", " + card.role),
-      info
+      createArt(card, card.alt || "Sample card of " + card.name + ", " + card.role)
     );
 
     modal.showModal();
