@@ -316,7 +316,6 @@ li p {
 
 #how-it-works li {
   counter-increment: step;
-  position: relative;
 }
 
 #how-it-works li::before {
@@ -396,7 +395,6 @@ li p {
 
 /* Every placeholder keeps the 2.5:3.5 trading card shape. */
 .card {
-  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -540,7 +538,6 @@ body.modal-open {
 }
 
 .card-modal-body {
-  position: relative;
   display: flex;
   flex-direction: column;
   /* Leaves room for the close button and the label below */
@@ -643,7 +640,6 @@ footer p {
   :root {
     --space-section: 5rem;
     --gutter: 2rem;
-    --header-height: 5rem;
   }
 
   #how-it-works ol,
@@ -665,6 +661,11 @@ footer p {
 
 /* ---------- Desktop: header on one line ---------- */
 @media (min-width: 1024px) {
+  /* Header is one row from here, so anchors need less offset */
+  :root {
+    --header-height: 5rem;
+  }
+
   header {
     flex-direction: row;
     align-items: center;
