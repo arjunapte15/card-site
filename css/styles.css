@@ -498,10 +498,11 @@ button.card:focus-visible {
   color: var(--color-muted);
 }
 
+/* Centered below the card (gallery tile and modal), never over the image */
 .card-label {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
+  display: block;
+  width: fit-content;
+  margin: 0.5rem auto 0;
   padding: 0.15rem 0.6rem;
   font-size: 0.75rem;
   font-weight: 800;
@@ -568,8 +569,8 @@ body.modal-open {
   position: relative;
   display: flex;
   flex-direction: column;
-  /* Leaves room for the close button and the info strip below the art */
-  width: min(100%, calc((100vh - 12rem) * 2.5 / 3.5));
+  /* Leaves room for the close button, the info strip, and the label below */
+  width: min(100%, calc((100vh - 14rem) * 2.5 / 3.5));
   margin-inline: auto;
   overflow: hidden;
   background: var(--color-surface);

@@ -157,12 +157,13 @@ const PLACEHOLDER_TILES = 4;
       button.setAttribute("aria-haspopup", "dialog");
 
       // Text below names the button; the image adds nothing for screen readers here.
-      button.append(createArt(card, ""), createLabel(), createInfo(card, "h3"));
+      button.append(createArt(card, ""), createInfo(card, "h3"));
       button.addEventListener("click", function () {
         openModal(card, button);
       });
 
-      item.appendChild(button);
+      // Label sits below the tile so it never covers the printed card.
+      item.append(button, createLabel());
       list.appendChild(item);
     });
 
@@ -192,7 +193,8 @@ const PLACEHOLDER_TILES = 4;
     const body = document.createElement("div");
     body.className = "card-modal-body";
 
-    dialog.append(close, body);
+    // Label sits below the card so it never covers the printed card.
+    dialog.append(close, body, createLabel());
 
     // Escape: the browser fires "cancel"; close through our own handler
     // so focus always returns to the card that opened the modal.
@@ -236,7 +238,6 @@ const PLACEHOLDER_TILES = 4;
     info.querySelector(".card-name").id = "card-modal-title";
     body.replaceChildren(
       createArt(card, card.alt || "Sample card of " + card.name + ", " + card.role),
-      createLabel(),
       info
     );
 
