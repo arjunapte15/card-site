@@ -1,4 +1,4 @@
-// Demo site: sample card gallery behavior (vanilla JS).
+// Collect-a-Teacher demo site: sample card gallery behavior (vanilla JS).
 
 /*
   SAMPLE_CARDS: the cards shown in the "Sample cards" gallery.
