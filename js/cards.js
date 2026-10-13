@@ -5,36 +5,51 @@
 
   To add a card:
     1. Put the image in images/cards/ (portrait, 2.5:3.5 shape, e.g. 750x1050).
+       Keep it under 500 KB; resize larger files to 750px wide.
     2. Add an object below with:
          file:   path to the image, starting with "images/cards/"
-         name:   the imaginary character's name
-         role:   their made-up school job
+         name:   the name shown on the card
+         role:   their school job
          rarity: a short label, e.g. "Common", "Rare", "Super rare"
+         alt:    a description of the card image, shown to screen readers
+                 in the modal (include any text printed on the card)
     3. Save and refresh the page.
 
-  Content rules: imaginary characters with AI-generated faces only.
-  No real staff, students, or names. If the list is empty, the
-  gallery shows PLACEHOLDER_TILES "Sample cards coming soon" tiles.
+  Content rules: real staff only with their written consent for the
+  website; otherwise imaginary characters with AI-generated faces.
+  No students. If the list is empty, the gallery shows
+  PLACEHOLDER_TILES "Sample cards coming soon" tiles.
 */
 const SAMPLE_CARDS = [
   {
-    file: "images/cards/captain-compass.webp",
-    name: "Captain Compass",
-    role: "Geography Teacher",
+    file: "images/cards/card-mr-atul.jpg",
+    name: "Mr. Atul",
+    role: "Teacher",
     rarity: "Rare",
+    alt:
+      "Trading card of Mr. Atul, a teacher who enjoys reading and travel, " +
+      "smiling in front of the Golden Gate Bridge with a plane flying overhead. " +
+      "Room 200. Hobbies: reading. Fun fact: enjoys traveling. Quote: " +
+      "\"Life is like riding a bicycle. To keep your balance, you must keep moving.\"",
   },
   {
-    file: "images/cards/chef-marigold-crumb.webp",
-    name: "Chef Marigold Crumb",
-    role: "Cafeteria Chef",
-    rarity: "Super rare",
+    file: "images/cards/card-ms-smruti.jpg",
+    name: "Ms. Smruti",
+    role: "Teacher",
+    rarity: "Rare",
+    alt:
+      "Trading card of Ms. Smruti, a teacher who enjoys hiking and science, " +
+      "smiling among a mountain trail, wildflowers, a teapot, a compass, " +
+      "backpacks, and hiking boots. Room 100. Hobbies: hiking. Fun fact: " +
+      "likes science. Quote: \"Believe you can and you're halfway there.\"",
   },
   // Template for another card:
   // {
-  //   file: "images/cards/your-character.webp",
-  //   name: "Character Name",
-  //   role: "Made-up School Job",
+  //   file: "images/cards/your-card.jpg",
+  //   name: "Card Name",
+  //   role: "School Job",
   //   rarity: "Common",
+  //   alt: "Trading card of Card Name, a ... who enjoys ...",
   // },
 ];
 
@@ -220,7 +235,7 @@ const PLACEHOLDER_TILES = 4;
     const info = createInfo(card, "h2");
     info.querySelector(".card-name").id = "card-modal-title";
     body.replaceChildren(
-      createArt(card, "Sample card of " + card.name + ", " + card.role),
+      createArt(card, card.alt || "Sample card of " + card.name + ", " + card.role),
       createLabel(),
       info
     );
