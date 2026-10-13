@@ -1,4 +1,4 @@
-// [BRAND NAME] demo site: sample card gallery behavior (vanilla JS).
+// Demo site: sample card gallery behavior (vanilla JS).
 
 /*
   SAMPLE_CARDS: the cards shown in the "Sample cards" gallery.
